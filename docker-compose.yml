@@ -1,0 +1,27 @@
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  abacus-1:
+    build: .
+    environment:
+      ABACUS_STORE: redis
+      ABACUS_REDIS_URL: redis://redis:6379/0
+      ABACUS_NODE_NAME: node-1
+    ports:
+      - "8001:8000"
+    depends_on:
+      - redis
+
+  abacus-2:
+    build: .
+    environment:
+      ABACUS_STORE: redis
+      ABACUS_REDIS_URL: redis://redis:6379/0
+      ABACUS_NODE_NAME: node-2
+    ports:
+      - "8002:8000"
+    depends_on:
+      - redis
